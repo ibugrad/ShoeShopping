@@ -1,0 +1,15 @@
+<template>
+  <lightning-card title="Shopping Cart">
+    <template for:each={cartItems} for:item="cartItem">
+      <div key={cartItem.Id}>
+        <p>{cartItem.Product__r.Name}</p>
+        <img src={cartItem.Product__r.Picture__c} />
+        <p>${cartItem.Product__r.Price__c}</p>
+        <p>{cartItem.Quantity__c}</p>
+        <p>${cartItem.Total__c}</p>
+        <lightning-button variant="brand" label="Remove" onclick={removeFromCart}></lightning-button>
+      </div>
+    </template>
+    <lightning-button variant="brand" label="Make an Order" onclick={makeOrder}></lightning-button>
+  </lightning-card>
+</template>
