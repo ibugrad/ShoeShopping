@@ -1,0 +1,31 @@
+import { LightningElement, track, api } from 'lwc';
+
+export default class FilterProducts extends LightningElement {
+  @api products = [];
+  @track categories = [
+    { label: 'All', value: '' },
+    { label: 'Boots', value: 'Boots' },
+    { label: 'Running Shoes', value: 'Running Shoes' }
+  ];
+  @track selectedCategory = '';
+  @track price = 0;
+
+  handleCategoryChange(event) {
+    this.selectedCategory = event.detail.value;
+  }
+
+  handlePriceChange(event) {
+    this.price = event.target.value;
+  }
+
+  handleFilterClick() {
+    const filteredProducts = this.products.filter(product => {
+      return (
+        (this.selectedCategory === '' || product.category === this.selectedCategory) &&
+        (this.price === 0 || product.price <= this.price)
+      );
+    });
+    const filterEvent = new CustomEvent('filter', { detail: { filteredProducts } });
+    this.dispatchEvent(filterEvent);
+  }
+}
