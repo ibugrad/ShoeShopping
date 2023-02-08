@@ -1,0 +1,21 @@
+<template>
+    <lightning-card title="Filter Products">
+      <lightning-combobox 
+        label="Category" 
+        options={categories} 
+        value={selectedCategory} 
+        onchange={handleCategoryChange}>
+      </lightning-combobox>
+      <lightning-input 
+        label="Price" 
+        type="number" 
+        value={price} 
+        onchange={handlePriceChange}>
+      </lightning-input>
+      <lightning-button 
+        variant="brand" 
+        label="Filter" 
+        onclick={handleFilterClick}>
+      </lightning-button>
+    </lightning-card>
+  </template>
