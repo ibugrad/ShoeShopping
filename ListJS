@@ -1,0 +1,23 @@
+import { LightningElement, track } from 'lwc';
+import getProducts from '@salesforce/apex/ProductController.getProducts';
+
+export default class ListProducts extends LightningElement {
+  @track products;
+  @track cart = [];
+
+  connectedCallback() {
+    getProducts()
+      .then(result => {
+        this.products = result;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
+  addToCart(event) {
+    const productId = event.target.dataset.id;
+    const product = this.products.find(product => product.Id === productId);
+    this.cart = [...this.cart, product];
+  }
+}
