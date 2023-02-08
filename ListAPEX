@@ -1,0 +1,15 @@
+public with sharing class ProductController {
+    @AuraEnabled
+    public static List<Product__c> getProducts() {
+        return [SELECT Id, Name, Price__c, Imagelink__c FROM Product__c];
+    }
+    
+    @AuraEnabled
+    public static void addToCart(Id productId) {
+        Order_Line_Item__c lineItem = new Order_Line_Item__c(
+            Product__c = productId,
+            Quantity__c = 1
+        );
+        insert lineItem;
+    }
+}
