@@ -1,0 +1,37 @@
+import { LightningElement, track } from 'lwc';
+import createOrder from '@salesforce/apex/OrderController.createOrder';
+
+export default class ShoppingCart extends LightningElement {
+  @track cartItems = [];
+
+  connectedCallback() {
+    this.template.addEventListener('cartchange', this.handleCartChange.bind(this));
+  }
+
+  handleCartChange(event) {
+    this.cartItems = event.detail;
+  }
+
+  removeFromCart(event) {
+    const cartItemId = event.target.dataset.id;
+    this.cartItems = this.cartItems.filter(cartItem => cartItem.Id !== cartItemId);
+  }
+
+  makeOrder() {
+    createOrder({
+      orderLineItems: this.cartItems.map(cartItem => {
+        return {
+          Product__c: cartItem.Id,
+          Quantity__c: cartItem.Quantity__c,
+          Total__c: cartItem.Total__c
+        };
+      })
+    })
+      .then(result => {
+        console.log(result);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+}
